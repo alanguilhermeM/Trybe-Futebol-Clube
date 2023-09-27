@@ -27,22 +27,22 @@ describe('Books Test', function() {
     expect(body).to.deep.equal(teams);
   });
 
-//   it('should return a book by id', async function() {
-//     sinon.stub(SequelizeBook, 'findOne').resolves(book as any);
+  it('Deve retornar o time de acordo com o id', async function() {
+    sinon.stub(SequelizeTeam, 'findByPk').resolves(team as any);
 
-//     const { status, body } = await chai.request(app).get('/books/1');
+    const { status, body } = await chai.request(app).get('/teams/1');
 
-//     expect(status).to.equal(200);
-//     expect(body).to.deep.equal(book);
-//   });
+    expect(status).to.equal(200);
+    expect(body).to.deep.equal(team);
+  });
 
-//   it('should return not found if the book doesn\'t exists', async function() {
-//     sinon.stub(SequelizeBook, 'findOne').resolves(null);
+  it('Deve retornar NOT FOUND caso não encontre o time de acordo com o id', async function() {
+    sinon.stub(SequelizeTeam, 'findByPk').resolves(null);
 
-//     const { status, body } = await chai.request(app).get('/books/1');
+    const { status, body } = await chai.request(app).get('/teams/1');
 
-//     expect(status).to.equal(404);
-//     expect(body.message).to.equal('Book 1 not found');
-//   });
+    expect(status).to.equal(404);
+    expect(body.message).to.equal('Team 1 not found');
+  });
   afterEach(sinon.restore);
 });

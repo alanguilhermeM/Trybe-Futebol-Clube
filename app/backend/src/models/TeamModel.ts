@@ -1,7 +1,7 @@
 import SequelizeTeam from '../database/models/SequelizeTeam';
 import { ITeam } from '../Interfaces/team/ITeam';
 import { ITeamModel } from '../Interfaces/team/ITeamModel';
-import { NewEntity } from '../Interfaces';
+// import { NewEntity } from '../Interfaces';
 
 export default class TeamModel implements ITeamModel {
   private model = SequelizeTeam;
@@ -11,5 +11,13 @@ export default class TeamModel implements ITeamModel {
     return dbData.map(({ id, teamName }) => (
       { id, teamName }
     ));
+  }
+
+  async findById(id: ITeam['id']): Promise<ITeam | null> {
+    const dbData = await this.model.findByPk(id);
+    if (dbData == null) return null;
+
+    const { teamName }: ITeam = dbData;
+    return { id, teamName };
   }
 }
