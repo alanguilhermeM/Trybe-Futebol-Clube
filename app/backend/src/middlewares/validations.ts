@@ -6,13 +6,17 @@ export default class Validations {
   static validateToken(req: Request, res: Response, next: NextFunction): Response | void {
     const token = req.headers.authorization;
 
-    if (!token) return res.status(401).json({ message: 'Token not found' });
-    const tokenWithoutBearer = token.split(' ')[1];
-    const isValidToken = jwtUtil.verify(tokenWithoutBearer) as JwtPayload;
-
-    if (!isValidToken) {
-      return res.status(401).json({ message: 'Token must be a valid token' });
+    try {
+      if (!token) return res.status(401).json({ message: 'Token not found' });
+      const tokenWithoutBearer = token.split(' ')[1];
+      const isValidToken = jwtUtil.verify(tokenWithoutBearer) as JwtPayload;
+      console.log('oi', isValidToken);
+    } catch (error) {
+      if (error) {
+        return res.status(401).json({ message: 'Token must be a valid token' });
+      }
     }
+
     next();
   }
 

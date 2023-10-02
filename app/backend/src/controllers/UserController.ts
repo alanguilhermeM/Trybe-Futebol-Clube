@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import mapStatusHTTP from '../utils/mapStatusHTTP';
 import UserService from '../services/UserService';
-import jwtUtil from '../utils/jwt.util';
+// import jwtUtil from '../utils/jwt.util';
 
 export default class UserController {
   constructor(
@@ -25,14 +25,8 @@ export default class UserController {
     if (!token) return res.status(401).json({ message: 'Token not found' });
 
     const tokenWithoutBearer = token.split(' ')[1];
-    const isValidToken = jwtUtil.verify(tokenWithoutBearer);
-
-    if (!isValidToken) {
-      return res.status(401).json({ message: 'Token must be a valid token' });
-    }
 
     const { data: { role } } = this.userService.getRole(tokenWithoutBearer);
-    console.log(role);
     return res.status(200).json({ role });
   }
 }
