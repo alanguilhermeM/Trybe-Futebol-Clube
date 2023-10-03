@@ -30,5 +30,5 @@ SequelizeTeam.init({
   timestamps: false,
   underscored: true,
 });
-// a
+
 export default SequelizeTeam;
