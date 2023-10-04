@@ -9,8 +9,8 @@ export default class Validations {
     try {
       if (!token) return res.status(401).json({ message: 'Token not found' });
       const tokenWithoutBearer = token.split(' ')[1];
-      const isValidToken = jwtUtil.verify(tokenWithoutBearer) as JwtPayload;
-      console.log('oi', isValidToken);
+      jwtUtil.verify(tokenWithoutBearer) as JwtPayload;
+      // console.log('oi', isValidToken);
     } catch (error) {
       if (error) {
         return res.status(401).json({ message: 'Token must be a valid token' });

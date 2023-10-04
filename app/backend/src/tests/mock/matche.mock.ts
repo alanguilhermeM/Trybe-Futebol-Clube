@@ -107,8 +107,79 @@ const matchesInProgressDB = [
   },
 ]
 
+const matcheById = [
+  {
+    id: 1,
+    homeTeamId: 16,
+    homeTeamGoals: 2,
+    awayTeamId: 9,
+    awayTeamGoals: 0,
+    inProgress: true,
+  }
+]
+
+const matcheFinished = [
+  {
+    id: 1,
+    homeTeamId: 16,
+    homeTeamGoals: 2,
+    awayTeamId: 9,
+    awayTeamGoals: 0,
+    inProgress: false,
+  }
+]
+
+const isValidToken = {
+  id: 1,
+  email: 'admin@admin.com',
+  role: 'admin',
+  username: 'Admin',
+}
+
+const updateReq = {
+  homeTeamGoals: 3,
+  awayTeamGoals: 1
+}
+
+const createMatch = {
+  homeTeamId: 16,
+  homeTeamGoals: 1,
+  awayTeamId: 2,
+  awayTeamGoals: 2,
+}
+
+const createdMatch = {
+  id: 1,
+  homeTeamId: 16,
+  homeTeamGoals: 1,
+  awayTeamId: 2,
+  awayTeamGoals: 2,
+  inProgress: true,
+}
+
+const sameTeamMatch = {
+  homeTeamId: 16,
+  homeTeamGoals: 1,
+  awayTeamId: 16,
+  awayTeamGoals: 2,
+}
+
+const noTeamMatch = {
+  homeTeamGoals: 1,
+  awayTeamId: 16,
+  awayTeamGoals: 2,
+}
+
 export {
   allMatches,
   matchesInProgress,
   matchesInProgressDB,
+  matcheById,
+  matcheFinished,
+  isValidToken,
+  updateReq,
+  createMatch,
+  createdMatch,
+  sameTeamMatch,
+  noTeamMatch,
 }

@@ -44,7 +44,8 @@ export default {
       inProgress: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
-        field: 'in_progress'
+        field: 'in_progress',
+        // defaultValue: true,
       },
     });
   },

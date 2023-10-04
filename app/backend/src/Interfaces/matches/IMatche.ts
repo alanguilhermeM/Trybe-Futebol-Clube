@@ -21,3 +21,10 @@ export interface IMatche2 {
     teamName: string
   }
 }
+
+export interface IMatcheCreate {
+  homeTeamId: number,
+  homeTeamGoals: number,
+  awayTeamId: number,
+  awayTeamGoals: number,
+}

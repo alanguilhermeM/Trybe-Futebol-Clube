@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-// import mapStatusHTTP from '../utils/mapStatusHTTP';
 import MatcheService from '../services/MatchesService';
+import mapStatusHTTP from '../utils/mapStatusHTTP';
 
 export default class MatchesController {
   constructor(
@@ -9,14 +9,12 @@ export default class MatchesController {
 
   public async getAllMatches(req: Request, res: Response) {
     const { inProgress } = req.query;
-    console.log(typeof inProgress);
 
     if (inProgress) {
       let progress = false;
       if (inProgress === 'true') {
         progress = true;
         const serviceResponse = await this.matcheService.findByProgress(progress);
-        // console.log('controler', serviceResponse.data);
         return res.status(200).json(serviceResponse.data);
       }
 
@@ -25,6 +23,31 @@ export default class MatchesController {
     }
     const serviceResponse = await this.matcheService.getAllMatches();
     res.status(200).json(serviceResponse.data);
+  }
+
+  public async finishProgress(req: Request, res: Response) {
+    const { id } = req.params;
+    const { status, data } = await this.matcheService.finishProgress(Number(id));
+
+    res.status(mapStatusHTTP(status)).json(data);
+  }
+
+  public async updateMatch(req: Request, res: Response) {
+    const { id } = req.params;
+    const { homeTeamGoals, awayTeamGoals } = req.body;
+    const { status, data } = await this
+      .matcheService.updateMatch(Number(id), { homeTeamGoals, awayTeamGoals });
+
+    res.status(mapStatusHTTP(status)).json(data);
+  }
+
+  public async create(req: Request, res: Response) {
+    const { status, data } = await this.matcheService.create(req.body);
+
+    if (status !== 'SUCCESSFUL') {
+      return res.status(mapStatusHTTP(status)).json(data);
+    }
+    res.status(201).json(data);
   }
 
   //   public async getTeamById(req: Request, res: Response) {

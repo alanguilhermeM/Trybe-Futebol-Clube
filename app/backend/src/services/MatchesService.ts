@@ -1,8 +1,8 @@
-// import { NewEntity } from '../Interfaces';
+import { NewEntity } from '../Interfaces';
 import MatchesModel from '../models/MatchesModel';
 import { IMatche } from '../Interfaces/matches/IMatche';
 import { IMatchesModel } from '../Interfaces/matches/IMatchesModel';
-import { ServiceResponse } from '../Interfaces/ServiceResponse';
+import { ServiceMessage, ServiceResponse } from '../Interfaces/ServiceResponse';
 
 export default class MatcheService {
   constructor(
@@ -18,6 +18,33 @@ export default class MatcheService {
     const matchesByProgress = await this.matcheModel.findByProgress(inProgress);
 
     return { status: 'SUCCESSFUL', data: matchesByProgress };
+  }
+
+  public async finishProgress(id: number): Promise<ServiceResponse<object>> {
+    await this.matcheModel.finishProgress(id);
+    return { status: 'SUCCESSFUL', data: { message: 'Finished' } };
+  }
+
+  public async updateMatch(id: number, body: object): Promise<ServiceResponse<IMatche | null>> {
+    const match = await this.matcheModel.updateMatch(id, body);
+    return { status: 'SUCCESSFUL', data: match };
+  }
+
+  public async create(match: NewEntity<IMatche>)
+    : Promise<ServiceResponse<IMatche | ServiceMessage>> {
+    const { homeTeamId, awayTeamId } = match;
+    if (homeTeamId === awayTeamId) {
+      return { status: 'BAD_REQUEST',
+        data: { message: 'It is not possible to create a match with two equal teams' } };
+    }
+    const homeTeam = await this.matcheModel.findById(homeTeamId);
+    const awayTeam = await this.matcheModel.findById(awayTeamId);
+
+    if (!homeTeam || !awayTeam) {
+      return { status: 'NOT_FOUND', data: { message: 'There is no team with such id!' } };
+    }
+    const newMatch = await this.matcheModel.create(match);
+    return { status: 'SUCCESSFUL', data: newMatch };
   }
 
 //   public async getTeamById(id: number): Promise<ServiceResponse<ITeam>> {
